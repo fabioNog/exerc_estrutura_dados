@@ -9,7 +9,7 @@
 
 struct Lista{
   struct node *inicio;
-	struct node *fim;
+  struct node *fim;
 } Lista;
 
 
@@ -18,7 +18,9 @@ int inserirInicio(struct Lista *lista, int dado);
 int inserirFim(struct Lista *lista, int dado);
 int mostrar(struct Lista lista);
 int remover(struct Lista *lista, int dado);
-int menu();
+int somaDoisNumeros(struct Lista *lista1,struct Lista *lista2);
+int somaGrandesNumeros(struct Lista *lista1,struct Lista *lista2);
+
 
 int main(){
 
@@ -26,6 +28,7 @@ int main(){
 	int dado;
 	struct Lista lista1;
 	struct Lista lista2;
+	struct Lista lista3;
 
 	inicializar(&lista1);	
 	inicializar(&lista2);	
@@ -59,15 +62,16 @@ int main(){
             n = n + valor;
 			inserirFim(&lista2,valor);
 			continue;
-        }
-        //printf("%d valores do N: \n",n);
+        }        
     }
-	printf("************ Lista 1 ************ \n");
+
+	somaDoisNumeros(&lista1,&lista2);
+	/* printf("************ Lista 1 ************ \n");
 	mostrar(lista1);
 	printf("\n************ Lista 1 ************ \n");
 	printf("\n************ Lista 2 ************ \n");
 	mostrar(lista2);
-	printf("\n************ Lista 2 ************ \n");
+	printf("\n************ Lista 2 ************ \n"); */
 	
 	return 0;
 }
@@ -80,27 +84,48 @@ void inicializar (struct Lista *lista){
 
 int inserirFim(struct Lista *lista, int dado){
 	struct node  *novo = malloc(sizeof(struct node));
-  if(novo == NULL)
-		return 0;
+  	if(novo == NULL)
+	  	return 0;
 	
-  novo->dado = dado;	
+  	novo->dado = dado;	
 	
 	if(novo == NULL)
 		return 0;
 
 	if(lista->inicio == NULL){
 		lista->inicio = novo;
+		lista->inicio->prox = NULL;
 		lista->fim = novo;
 		novo->prox = NULL;
-    novo->ant  = NULL;
+    	novo->ant  = NULL;
 	}else{
 		lista->fim->prox = novo;
-    novo->ant = lista->fim;
-    novo->prox = NULL;
+    	novo->ant = lista->fim;
+    	novo->prox = NULL;
 		lista->fim = novo;
 	}
 
 	return 1;
+}
+
+int somaGrandesNumeros(struct Lista *lista1,struct Lista *lista2){
+	int soma = 0;
+	struct Lista *aux1;
+	struct Lista *aux2;
+	
+	while(aux1 != aux1->inicio->ant && aux2 != aux2->inicio->ant){
+		aux1 = lista1->fim->ant;
+		aux2 = lista2->fim->ant;
+		somaDoisNumeros(&aux1,&aux2);
+		lista1 = lista1->fim->ant;
+		lista2 = lista2->fim->ant;
+	}
+
+	return soma;
+}
+
+int somaDoisNumeros(struct Lista *l1,struct Lista *l2){
+
 }
 
 
@@ -112,7 +137,7 @@ int mostrar(struct Lista lista){
 	}else{
 		aux = lista.inicio;
 		while(aux != NULL){
-			printf("%d", aux->dado);
+			printf("%d ", aux->dado);
 			aux = aux->prox;
 		}
 	}

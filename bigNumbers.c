@@ -107,30 +107,6 @@ int main(){
 	printf("\n************ Lista 2 ************ \n");
 	mostrar(lista2);
 	printf("\n************ Lista 2 ************ \n");
-
-
-	/* do{
-		op = menu();
-		switch(op){
-			case 1:  printf("Digite um numero: ");
-						scanf("%d", &dado);
-						if(inserirFim(&lista, dado))
-							printf("Insercao realizado com sucesso!");
-						else
-							printf("Falha na insercao!");
-						break;
-			case 2:	mostrar(lista);
-						break;
-			case 3:  printf("Digite um numero: ");
-						scanf("%d", &dado);
-						printf("\n%d removidos!!!", remover(&lista,dado));
-						break;
-			case 4:	printf("\nTchau!!!");
-						break;
-			default: printf("\nOpcao Invalida!!!");
-		}
-
-	}while(op != 4); */
 	
 	return 0;
 }

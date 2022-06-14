@@ -63,26 +63,53 @@ int main(){
 
   int op;
 	int dado;
-	struct Lista lista;
+	struct Lista lista1;
+	struct Lista lista2;
 
-	inicializar(&lista);	
+	inicializar(&lista1);	
+	inicializar(&lista2);	
 
-    printf("*********** Soma de grandes Numeros ********** ");
+	
+
+    printf("*********** Soma de grandes Numeros **********\n");
     int n = 0,valor;
-    printf("Digite -1 finalizar o programa");    
+	printf("*********************************************** \n	");    
+    printf("Digite -1 finalizar o programa \n");
+	printf("*********************************************** \n\n");    
     while(n != -2){
         printf("Digite um valor: ");
         scanf("%d",&valor);
-        if(valor == -1  && n == 0){
-            n = n + valor;
+		if(valor != -1 && n == 0){
+            inserirFim(&lista1,valor);
+			continue;
         }
-        else if(valor == -1  && n == -1){
-            n = -2;
+		else if(valor != -1 && n == -1){
+            inserirFim(&lista2,valor);
+			continue;
         }
-        
-    }
 
-	do{
+        else if(valor == -1 && n == 0){
+            n = n + valor;
+			inserirFim(&lista1,valor);
+			continue;
+        }
+
+        else if(valor == -1  && n == -1){
+            n = n + valor;
+			inserirFim(&lista2,valor);
+			continue;
+        }
+        //printf("%d valores do N: \n",n);
+    }
+	printf("************ Lista 1 ************ \n");
+	mostrar(lista1);
+	printf("\n************ Lista 1 ************ \n");
+	printf("\n************ Lista 2 ************ \n");
+	mostrar(lista2);
+	printf("\n************ Lista 2 ************ \n");
+
+
+	/* do{
 		op = menu();
 		switch(op){
 			case 1:  printf("Digite um numero: ");
@@ -103,12 +130,12 @@ int main(){
 			default: printf("\nOpcao Invalida!!!");
 		}
 
-	}while(op != 4);
+	}while(op != 4); */
 	
 	return 0;
 }
 
-int menu(){
+/* int menu(){
 	int op;
 	printf("\n 1 - Inserir no Inicio");
 	printf("\n 2 - Inserir no Fim");
@@ -117,14 +144,14 @@ int menu(){
 	printf("\n 5 - Sair\n");
 	scanf("%d", &op);
 	return op;
-}
+} */
 
 void inicializar (struct Lista *lista){   
   lista->inicio = NULL;   
   lista->fim = NULL;   
 }   
 
-int inserirInicio(struct Lista *lista, int dado){
+/* int inserirInicio(struct Lista *lista, int dado){
 	struct node  *novo = malloc(sizeof(struct node));
 	
 	if(novo == NULL)
@@ -142,7 +169,7 @@ int inserirInicio(struct Lista *lista, int dado){
 	}
 
 	return 1;
-}
+} */
 
 int inserirFim(struct Lista *lista, int dado){
 	struct node  *novo = malloc(sizeof(struct node));
@@ -206,7 +233,7 @@ int mostrar(struct Lista lista){
 	}else{
 		aux = lista.inicio;
 		while(aux != NULL){
-			printf("%d ", aux->dado);
+			printf("%d", aux->dado);
 			aux = aux->prox;
 		}
 	}

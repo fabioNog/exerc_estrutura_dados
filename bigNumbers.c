@@ -69,7 +69,8 @@ int main()
 		}
 	}
 
-	somaDoisNumeros(&lista1, &lista2);
+	somaGrandesNumeros(&lista1, &lista2);
+//	somaBig(&lista1, &lista2);
 	/* printf("************ Lista 1 ************ \n");
 	mostrar(lista1);
 	printf("\n************ Lista 1 ************ \n");
@@ -116,8 +117,8 @@ int inserirFim(struct Lista *lista, int dado)
 int somaGrandesNumeros(struct Lista *lista1, struct Lista *lista2)
 {
 	int soma = 0;
-	struct Lista *aux1 = aux1->fim->ant;
-	struct Lista *aux2 = aux2->fim->ant;
+	struct node *aux1 = lista1->fim->ant;
+	struct node *aux2 = lista2->fim->ant;
 
 	//Criar uma função para inserir na terceira lista os valores do somaDoisNumeros
 	while (aux1 != NULL || aux2 != NULL)
@@ -134,16 +135,19 @@ int somaDoisNumeros(struct Lista *l1, struct Lista *l2)
 {
 	if (l1 != NULL && l2 != NULL)
 	{
+		printf("Entrei aqui n1");
 	}
 	else if (l1 == NULL && l2 != NULL)
 	{
+		printf("Entrei aqui n2");
 	}
 	else if (l1 != NULL && l2 == NULL)
 	{
+		printf("Entrei aqui n3");
 	}
 	else
 	{
-		return;
+		return 0;
 	}
 }
 

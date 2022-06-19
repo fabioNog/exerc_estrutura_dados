@@ -20,8 +20,7 @@ int inserirFim(struct Lista *lista, int dado);
 int inserirInicio(struct Lista *lista, int dado);
 int mostrar(struct Lista lista);
 int remover(struct Lista *lista, int dado);
-int somaDoisNumeros(int n1, int n2);
-void somaGrandesNumeros(struct Lista *lista1, struct Lista *lista2, struct Lista *lista3);
+int somarDoisNumeros(struct Lista* lista1,struct Lista* lista2,struct Lista lista3);
 
 int main()
 {
@@ -97,11 +96,15 @@ int main()
 		} while (tam1 > tam2);
 	}
 
-	struct node *aux1 = lista1.inicio;
-	struct node *aux2 = lista2.inicio;
+	somarDoisNumeros(&lista1,&lista2,lista3);	
 
-	
-	inicializar(&lista3);
+
+	return 0;
+}
+
+int somarDoisNumeros(struct Lista *lista1,struct Lista *lista2,struct Lista lista3){
+	struct node *aux1 = lista1->inicio;
+	struct node *aux2 = lista2->inicio;
 
 	int soma;
 	int vai_um = 0;
@@ -133,19 +136,8 @@ int main()
 	{
 		inserirInicio(&lista3, vai_um);
 	}
-
 	mostrar(lista3);
-
-	//	somaGrandesNumeros(&lista1, &lista2,&lista3);
-	//	somaBig(&lista1, &lista2);
-	/* printf("************ Lista 1 ************ \n");
-	mostrar(lista1);
-	printf("\n************ Lista 1 ************ \n");
-	printf("\n************ Lista 2 ************ \n");
-	mostrar(lista2);
-	printf("\n************ Lista 2 ************ \n"); */
-
-	return 0;
+	return 1;
 }
 
 void inicializar(struct Lista *lista)
@@ -208,46 +200,6 @@ int inserirInicio(struct Lista *lista, int dado)
 	return 1;
 }
 
-void somaGrandesNumeros(struct Lista *lista1, struct Lista *lista2, struct Lista *lista3)
-{
-	int soma = 0;
-	int recebe = 0;
-	struct node *aux1 = lista1->fim->ant;
-	struct node *aux2 = lista2->fim->ant;
-
-	//Criar uma função para inserir na terceira lista os valores do somaDoisNumeros
-	while (aux1 != NULL && aux2 != NULL)
-	{
-		if (aux1 == NULL && aux2 != NULL)
-		{
-			recebe = somaDoisNumeros(0, aux2->dado);
-			inserirInicio(lista3, recebe);
-		}
-		else if (aux1 != NULL && aux2 == NULL)
-		{
-			recebe = somaDoisNumeros(aux1->dado, 0);
-		}
-		else
-		{
-			recebe = somaDoisNumeros(aux1->dado, aux1->dado);
-			if (recebe > 9)
-			{
-				int resto = recebe % 10;
-				int valorDadivisao = recebe / 10;
-				inserirInicio(lista3, resto);
-			}
-		}
-
-		aux1 = aux1->ant;
-		aux2 = aux2->ant;
-	}
-}
-
-int somaDoisNumeros(int v1, int v2)
-{
-	int soma = v1 + v2;
-	return soma;
-}
 
 int remover(struct Lista *lista, int dado)
 {

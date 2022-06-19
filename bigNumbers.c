@@ -1,270 +1,208 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 
-struct node
-{
-	int dado;
-	struct node *prox;
-	struct node *ant;
+struct node{   
+
+    int dado;   
+    struct node *prox;
 };
 
-struct Lista
-{
-	struct node *inicio;
+struct Lista{
+
+    struct node *inicio;
 	struct node *fim;
-} Lista;
+};
 
 void inicializar(struct Lista *lista);
 int inserirInicio(struct Lista *lista, int dado);
 int inserirFim(struct Lista *lista, int dado);
-int inserirInicio(struct Lista *lista, int dado);
-int mostrar(struct Lista lista);
 int remover(struct Lista *lista, int dado);
-int somarDoisNumeros(struct Lista* lista1,struct Lista* lista2,struct Lista lista3);
+int mostrar(struct Lista lista);
 
-int main()
-{
+int main(){
 
-	int op;
-	int dado;
-	struct Lista lista1;
-	struct Lista lista2;
-	struct Lista lista3;
+    int dado = 0, tamN1 = -1, tamN2 = -1;
 
-	inicializar(&lista1);
-	inicializar(&lista2);
-	inicializar(&lista3);
+	struct Lista listaN1;
+	struct Lista listaN2;
+	inicializar(&listaN1);
+	inicializar(&listaN2);
 
-	printf("*********** Soma de grandes Numeros **********\n");
-	int n = 0;
-	int tam1, tam2 = -1;
-	int valor;
-	printf("*********************************************** \n	");
-	printf("Digite -1 duas vezes para finalizar o programa \n");
-	printf("*********************************************** \n\n");
-	while (n != -2)
-	{
-		printf("Digite um valor: ");
-		scanf("%d", &valor);
-		if (valor != -1 && n == 0)
-		{
-			inserirInicio(&lista1, valor);
-			tam1++;
-			continue;
-		}
-		else if (valor != -1 && n == -1)
-		{
-			inserirInicio(&lista2, valor);
-			tam2++;
-			continue;
-		}
+    do{
 
-		else if (valor == -1 && n == 0)
-		{
-			n = n + valor;
-			inserirInicio(&lista1, valor);
-			tam1++;
-			continue;
-		}
+        scanf("%d", &dado);
+        inserirInicio(&listaN1, dado);
+		tamN1++;
+    }while(dado != -1);
 
-		else if (valor == -1 && n == -1)
-		{
-			n = n + valor;
-			inserirInicio(&lista2, valor);
-			tam2++;
-			continue;
-		}
+	dado = 0;
+
+	do{
+
+        scanf("%d", &dado);
+        inserirInicio(&listaN2, dado);
+		tamN2++;
+    }while(dado != -1);
+
+	remover(&listaN1, -1);
+	remover(&listaN2, -1);
+
+	if(tamN1 > tamN2){
+
+		do{
+
+			inserirFim(&listaN2, 0);
+			tamN2++;
+		}while(tamN1 > tamN2);
+
+	}else if (tamN2 > tamN1){
+
+		do{
+
+			inserirFim(&listaN1, 0);
+			tamN1++;
+		}while(tamN2 > tamN1);
 	}
 
-	remover(&lista1, -1);
-	remover(&lista2, -1);
+	struct node *auxN1 = listaN1.inicio;
+	struct node *auxN2 = listaN2.inicio;
 
-	if (tam1 < tam2)
-	{
-		do
-		{
-			inserirFim(&lista1, 0);
-			tam1++;
-		} while (tam2 > tam1);
-	}
-	else
-	{
-		do
-		{
-			inserirFim(&lista2, 0);
-			tam2++;
-		} while (tam1 > tam2);
-	}
-
-	somarDoisNumeros(&lista1,&lista2,lista3);	
-
-
-	return 0;
-}
-
-int somarDoisNumeros(struct Lista *lista1,struct Lista *lista2,struct Lista lista3){
-	struct node *aux1 = lista1->inicio;
-	struct node *aux2 = lista2->inicio;
+	struct Lista resposta;
+	inicializar(&resposta);
 
 	int soma;
 	int vai_um = 0;
 
-	while (aux1 != NULL)
-	{
+	while(auxN1 != NULL){
 
-		soma = aux1->dado + aux2->dado + vai_um;
+		soma = auxN1->dado + auxN2->dado + vai_um;
 
-		if (soma < 10)
-		{
+		if(soma < 10){
 
-			inserirInicio(&lista3, soma);
+			inserirInicio(&resposta, soma);
 			vai_um = 0;
-		}
-		else
-		{
+		}else{
 
-			soma = ((aux1->dado + aux2->dado + vai_um) % 10);
-			inserirInicio(&lista3, soma);
+			soma = ((auxN1->dado + auxN2->dado + vai_um) % 10);
+			inserirInicio(&resposta, soma);
 			vai_um = 1;
 		}
 
-		aux1 = aux1->prox;
-		aux2 = aux2->prox;
+		auxN1 = auxN1->prox;
+		auxN2 = auxN2->prox;
 	}
 
-	if (vai_um == 1)
-	{
-		inserirInicio(&lista3, vai_um);
+	if(vai_um == 1){
+
+		inserirInicio(&resposta, vai_um);
 	}
-	mostrar(lista3);
-	return 1;
+
+	mostrar(resposta);
+
+	return 0;
 }
 
-void inicializar(struct Lista *lista)
-{
-	lista->inicio = NULL;
-	lista->fim = NULL;
-}
+void inicializar(struct Lista *lista){
 
-int inserirFim(struct Lista *lista, int dado)
-{
-	struct node *novo = malloc(sizeof(struct node));
-	if (novo == NULL)
+	lista->inicio = NULL;   
+	lista->fim = NULL;   
+}   
+
+int inserirInicio(struct Lista *lista, int dado){
+	struct node  *novo = malloc(sizeof(struct node));
+	
+	if(novo == NULL)
 		return 0;
 
-	novo->dado = dado;
-
-	if (lista->inicio == NULL)
-	{
-		lista->inicio = novo;
-		lista->inicio->prox = NULL;
-		lista->fim = novo;
-		novo->prox = NULL;
-		novo->ant = NULL;
-	}
-	else
-	{
-		lista->fim->prox = novo;
-		novo->ant = lista->fim;
-		novo->prox = NULL;
-		lista->fim = novo;
-	}
-
-	return 1;
-}
-
-int inserirInicio(struct Lista *lista, int dado)
-{
-	struct node *novo = malloc(sizeof(struct node));
-
-	if (novo == NULL)
-		return 0;
-
-	novo->dado = dado;
-
-	if (lista->inicio == NULL)
-	{
+	novo->dado = dado;	
+	
+	if(lista->inicio == NULL){
 		lista->inicio = novo;
 		lista->fim = novo;
-		novo->prox = NULL;
-		novo->ant = NULL;
-	}
-	else
-	{
+		lista->fim->prox = NULL;
+	}else{
 		novo->prox = lista->inicio;
-		lista->inicio->ant = novo;
-		novo->ant = NULL;
 		lista->inicio = novo;
 	}
 
 	return 1;
 }
 
+int inserirFim(struct Lista *lista, int dado){
 
-int remover(struct Lista *lista, int dado)
-{
+	struct node  *novo = malloc(sizeof(struct node));
+	novo->dado = dado;	
+	
+	if(novo == NULL){
+
+		return 0;
+	}
+	if(lista->inicio == NULL){
+
+		lista->inicio = novo;
+		lista->fim = novo;
+		lista->fim->prox = NULL;
+	}else{
+
+		lista->fim->prox = novo;
+		lista->fim = novo;
+		lista->fim->prox = NULL;
+	}
+
+	return 1;
+}
+
+int remover(struct Lista *lista, int dado){
 	struct node *aux;
+	struct node *ant;
 	int qtdDel = 0;
-
+	
 	aux = lista->inicio;
+	ant = NULL;
 
-	while (aux != NULL)
-	{
-		if (aux->dado == dado)
-		{
+	while(aux != NULL){
+		if(aux->dado == dado){
 			qtdDel++;
-			if (aux == lista->inicio)
-			{
+			if(aux == lista->inicio){
 				lista->inicio = aux->prox;
-				if (lista->inicio != NULL)
-				{
-					lista->inicio->ant = NULL;
-				}
 				free(aux);
 				aux = lista->inicio;
-			}
-			else if (aux == lista->fim)
-			{
-				lista->fim = lista->fim->ant;
-				lista->fim->prox = NULL;
+			}else if(aux == lista->fim){
+				ant->prox = NULL;
+				lista->fim = ant;
 				free(aux);
 				aux = NULL;
-			}
-			else
-			{
-				aux->ant->prox = aux->prox;
-				aux->prox->ant = aux->ant;
-				struct node *aux2;
-				aux2 = aux->prox;
+			}else{
+				ant->prox = aux->prox;
 				free(aux);
-				aux = aux2;
+				aux = ant->prox;
 			}
-		}
-		else
-		{
+		}else{
+			ant = aux;
 			aux = aux->prox;
 		}
 	}
-
+	
 	return qtdDel;
 }
 
-int mostrar(struct Lista lista)
-{
-	struct node *aux;
+int mostrar(struct Lista lista){
 
-	if (lista.inicio == NULL)
-	{
-		return 0;
-	}
-	else
-	{
+	struct node *aux;	
+	
+	if(lista.inicio == NULL){
+
+		return 0;	
+	}else{
+
 		aux = lista.inicio;
-		while (aux != NULL)
-		{
-			printf("%d ", aux->dado);
+		while(aux != NULL){
+
+			printf("%d", aux->dado);
 			aux = aux->prox;
 		}
 	}
+
 	return 1;
 }

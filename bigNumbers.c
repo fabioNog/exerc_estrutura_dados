@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+Filipe
 struct node
 {
 	int dado;

@@ -3,6 +3,7 @@
 
 struct node
 {
+	//apenas um teste
 	int dado;
 	struct node *prox;
 	struct node *ant;

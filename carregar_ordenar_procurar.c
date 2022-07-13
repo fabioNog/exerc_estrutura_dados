@@ -5,40 +5,77 @@
 typedef struct registro
 {
     int id;
-    char descricao[30];
+    char descricao[50];
 } Registro;
 
 void flush_in();
 void ler(Registro *registro, int n);
 void imprimir(Registro *registro, int n);
-void ordena(Registro *registro, int n);
+void swap(Registro* a, Registro* b);
+int partition (Registro arr[], int low, int high);
+void quickSort(Registro arr[], int low, int high);
 int binario(Registro *item, char *key, int tam);
+
+void swap(Registro* a, Registro* b) 
+{ 
+    Registro t = *a; 
+    *a = *b; 
+    *b = t; 
+} 
+
+int partition (Registro arr[], int low, int high) 
+{ 
+    char pivot[50] ; 
+    strcpy(pivot, arr[high].descricao);
+    int i = (low - 1); 
+  
+    for (int j = low; j <= high- 1; j++) 
+    { 
+        if (strcmp(arr[j].descricao , pivot) <= 0) 
+        { 
+            i++;  
+            swap(&arr[i], &arr[j]); 
+        } 
+    } 
+    swap(&arr[i + 1], &arr[high]); 
+    return (i + 1); 
+} 
+  
+void quickSort(Registro arr[], int low, int high) 
+{ 
+    if (low < high) 
+    { 
+        int pi = partition(arr, low, high); 
+        
+        quickSort(arr, low, pi - 1); 
+        quickSort(arr, pi + 1, high); 
+    } 
+} 
 
 int main()
 {
-    char key[30], search[30];
+    char key[50];
     int tam = 0;
     Registro *registro;
 
-    printf("Quantidade: ");
+    //printf("Quantidade: ");
     scanf("%d", &tam);
     flush_in();
 
-    printf("Pesquisa: ");
-    scanf("%s", search);
-    flush_in();
-    strcpy(key, search);
+    //printf("Pesquisa: ");
+    fgets(key, 50, stdin);
+    key[strcspn(key, "\n")] = '\0';
 
     int posicao = -1;
 
     registro = (Registro *)malloc(tam * sizeof(Registro));
 
     ler(registro, tam);
-    ordena(registro, tam);
-    imprimir(registro, tam);
+    quickSort(registro,0,tam-1);
+    //imprimir(registro, tam);
 
     posicao = binario(registro, key, tam);
-    printf("Localizado na posicao: %d\n", posicao);
+    printf("%d\n", posicao);
 
     free(registro);
 
@@ -58,42 +95,22 @@ void ler(Registro *registro, int n)
 {
     for (int i = 0; i < n; i++)
     {
-        printf("Id: ");
         scanf("%d", &registro[i].id);
         flush_in();
-        printf("Descricao: ");
-        fgets(registro[i].descricao, sizeof(registro[i].descricao), stdin);
+        fgets(registro[i].descricao, 50, stdin);
         registro[i].descricao[strcspn(registro[i].descricao, "\n")] = '\0';
     }
 }
 
 void imprimir(Registro *registro, int n)
 {
+    //printf("----------TESTE----------\n");
     for (int i = 0; i < n; i++)
     {
         printf("%d\n", registro[i].id);
         printf("%s\n", registro[i].descricao);
     }
-}
-
-void ordena(Registro *registro, int n)
-{
-    int contador, vezes, num;
-    do
-    {
-        vezes = 0;
-        for (contador = 0; contador < n - 1; contador++)
-        {
-            num = strlen(registro[contador].descricao);
-            if (strncmp(registro[contador].descricao, registro[contador + 1].descricao, num) > 0)
-            {
-                Registro tmp = registro[contador];
-                registro[contador] = registro[contador + 1];
-                registro[contador + 1] = tmp;
-                vezes++;
-            }
-        }
-    } while (vezes > 0);
+    //printf("-----RESPOSTA-----\n");
 }
 
 int binario(Registro *item, char *key, int tam)
@@ -106,16 +123,16 @@ int binario(Registro *item, char *key, int tam)
     {
         mid = (low + high) / 2;
         if (strcmp(key, item[mid].descricao) < 0)
-        { //if(strcmp(key,item[mid]) < 0)
+        {
             high = mid - 1;
         }
         else if (strcmp(key, item[mid].descricao) > 0)
-        { //if(strcmp(key , item[mid]) > 0 )
+        {
             low = mid + 1;
         }
         else
         {
-            return mid;
+            return item[mid].id;
         }
     }
 
